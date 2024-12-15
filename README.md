@@ -1,13 +1,15 @@
 # ScreamFortressChecker
-After so many Scream Fortresses, have you ever wondered if you
-got all the items that can drop from the Halloween Packages? Then, this is for you!
+After so many [Scream Fortresses](https://wiki.teamfortress.com/wiki/Halloween_event), have you ever wondered if you
+got all the items that can drop from the [Halloween Packages](https://wiki.teamfortress.com/wiki/Halloween_Package)? Then, this is for you!
 
 With this tool you can check how many items you are missing and how many you have repeated.
 Additionally, you can also choose to ignore items that are tradable (i.e. not
 dropped from the halloween packages) or items with special qualities (strange, haunted, etc.).
 
 ## Screenshots 
+Example of "Get Missing Items" feature:
 ![Example of 'Get Missing Items'](./readme_images/img1.jpg?raw=true "Title")
+Example of "Get Repeated Items" feature:
 ![Example of 'Get Repeated Items'](./readme_images/img2.jpg?raw=true "Title")
 
 ## Installation 
