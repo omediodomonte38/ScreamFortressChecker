@@ -1,0 +1,14 @@
+[project]
+name = "screamfortresschecker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flask>=3.1.0",
+    "requests>=2.32.3",
+    "setuptools>=75.6.0",
+    "tf2-sku-to-name>=1.0.7",
+    "tf2-utils>=2.2.0",
+    "websockets>=14.1",
+]

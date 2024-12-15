@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Data Fetcher | Team Fortress 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #f5d6a5;
+            color: #2c2c2c;
+            padding: 20px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #e85634;
+            font-size: 3rem;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            color: #f39c12;
+            margin-top: 20px;
+        }
+
+        h3 {
+            font-size: 1rem;
+            text-align: center;
+            color: #383737;
+            margin-top: 20px;
+            margin-left: 3rem;
+            margin-right: 3rem;
+
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            margin: 10px;
+            border: 2px solid #e85634;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            background-color: #fff6e5;
+            font-size: 1.2rem;
+        }
+
+        button {
+            background-color: #d9534f;
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            width: 100%;
+            max-width: 320px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        button:hover {
+            background-color: #c9302c;
+        }
+
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto; /
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        button {
+            width: auto;
+            max-width: 200px;
+            padding: 15px;
+            font-size: 1rem;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .checkbox-container label {
+            display: flex;
+            align-items: normal;
+            justify-content: center;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            width: 12rem;
+            text-align: left;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .button-container {
+                justify-content: space-evenly;
+                gap: 30px;
+            }
+
+            .checkbox-container {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .checkbox-container input[type="checkbox"] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #e85634;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .error {
+            color: #c9302c;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .result h3 {
+            color: #383737;
+            font-size: 0.5rem;
+        }
+
+        pre {
+            background-color: #2c2c2c;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #8e44ad;
+        }
+
+        .footer a {
+            color: #8e44ad;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .item-grid-container {
+            overflow: hidden;
+            padding: 0 15px;
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding: 0 15px;
+        }
+
+
+        .item-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .item-card img {
+            width: 100%;
+            max-width: 150px;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .item-name {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #2c2c2c;
+        }
+
+        @media (min-width: 1200px) {
+            .item-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .item-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .item-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            .item-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 575px) {
+            .item-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .item-card img {
+                max-width: 120px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .item-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-card img {
+                max-width: 100px;
+            }
+        }
+        .item-card {
+            position: relative;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .item-card img {
+            width: 100%;
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .item-name {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #2c2c2c;
+        }
+
+        .item-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #FFA500;
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .item-tag-close {
+            font-weight: bold;
+            margin-right: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 15rem;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <h1>Scream Fortress Item Analyzer</h1>
+    <h2>Fetch Halloween droppable items data</h2>
+
+    <h3>
+        Know how many items you have repeated and how many you are missing from the
+        <a href="https://wiki.teamfortress.com/wiki/Halloween_Package" target="_blank" style="color: #f39c12; text-decoration: underline;">Halloween Packages</a> that drop from
+        <a href="https://wiki.teamfortress.com/wiki/Halloween_Contracts" target="_blank" style="color: #f39c12; text-decoration: underline;">Scream Fortress Contracts</a>
+    </h3>
+
+    <div class="form-container">
+        <div class="input-container">
+            <label for="api_key">Steam API Key:</label>
+            <input type="text" id="api_key" name="api_key" placeholder="Enter your Steam API Key" required><br>
+
+            <label for="profile_url">Steam Profile URL:</label>
+            <input type="text" id="profile_url" name="profile_url" placeholder="Enter your Steam Profile URL" required><br>
+        </div>
+
+        <div class="button-container">
+            <button type="submit" id="submitBtn_miss">Get Missing Items!</button>
+            <button type="submit" id="submitBtn_repeated">Get Repeated items!</button>
+        </div>
+
+        <div class="checkbox-container">
+            <label for="ignore_tradable" class="tooltip">
+                <input type="checkbox" id="ignore_tradable">
+                Ignore Tradable
+                <span class="tooltip-text">Ignore items that are tradable, not counting them towards the total</span>
+            </label>
+            <label for="ignore_qualities" class="tooltip">
+                <input type="checkbox" id="ignore_qualities">
+                Ignore Qualities
+                <span class="tooltip-text">Ignore items with special qualities, such as Strange or Haunted, not counting them towards the total</span>
+            </label>
+        </div>
+    </div>
+
+
+    <div class="result-container" id="result">
+        <div class="spinner" id="spinner"></div>
+    </div>
+
+    <div class="footer">
+
+    </div>
+
+    <script>
+        // form submission
+        function handleFormSubmit(event, buttonType, url) {
+            event.preventDefault();
+
+            const apiKey = document.getElementById('api_key').value;
+            const profileUrl = document.getElementById('profile_url').value;
+            const resultDiv = document.getElementById('result');
+            const ignoreTradable = document.getElementById('ignore_tradable').checked;
+            const ignoreQualities = document.getElementById('ignore_qualities').checked;
+
+            const spinner = document.createElement('div');
+            spinner.classList.add('spinner');
+            resultDiv.innerHTML = '';
+            resultDiv.style.display = 'block';
+            resultDiv.appendChild(spinner);
+
+            spinner.style.display = 'block';
+            resultDiv.style.display = 'block';
+
+            resultDiv.innerHTML = '';
+
+            resultDiv.appendChild(spinner);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'api_key': apiKey,
+                    'profile_url': profileUrl,
+                    'ignore_tradable': ignoreTradable,
+                    'ignore_qualities': ignoreQualities,
+                    'button_type': buttonType // Pass which button to distinguish the requests
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                spinner.style.display = 'none';
+
+                if (data.error) {
+                    resultDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                } else {
+                    let itemsHtml = `<div class="item-grid-container">`;
+
+                    const itemCount = data.length;
+                    itemsHtml += `
+                        <div class="item-count">
+                            <p>${buttonType === 'miss' ? 'Missing' : 'Repeated'} Items: ${itemCount}</p>
+                        </div>
+                    `;
+
+                    itemsHtml += `<div class="item-grid">`;
+
+                    data.forEach(item => {
+                        let itemHtml = `
+                            <div class="item-card">
+                                <img src="${item[1]}" alt="${item[0]}">
+                                <div class="item-name">
+                        `;
+
+                        // If item[3] exists, create a link to the TF2 Wiki page for the item
+                        if (item[3]) {
+                            const itemLink = item[0].replace(/\s+/g, '_');
+                            itemHtml += `
+                                <a href="https://wiki.teamfortress.com/wiki/${itemLink}" target="_blank">${item[0]}</a>
+                            `;
+                        } else {
+                            itemHtml += item[0];
+                        }
+
+                        itemHtml += `</div>`;
+
+                        // Check if item[2] exists and add it to the top right corner
+                        if (item[2]) {
+                            itemHtml += `
+                                <div class="item-tag">
+                                    <span class="item-tag-close">x</span>
+                                    ${item[2]}
+                                </div>
+                            `;
+                        }
+
+                        itemHtml += `</div>`;
+
+                        itemsHtml += itemHtml;
+                    });
+
+                    itemsHtml += `</div></div>`;
+                    resultDiv.innerHTML = itemsHtml;
+                }
+
+            })
+            .catch(error => {
+                spinner.style.display = 'none';
+                resultDiv.innerHTML = `<p class="error">An error occurred: ${error.message}</p>`;
+            });
+        }
+
+        document.getElementById('submitBtn_miss').addEventListener('click', function(event) {
+            handleFormSubmit(event, 'miss', '/get_halloween_data');
+        });
+
+        document.getElementById('submitBtn_repeated').addEventListener('click', function(event) {
+            handleFormSubmit(event, 'repeated', '/get_repeated_data');
+        });
+
+    </script>
+
+</body>
+</html>
